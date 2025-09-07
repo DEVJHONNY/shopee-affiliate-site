@@ -117,28 +117,6 @@ body {
 .filters {
     background: rgba(255, 255, 255, 0.95);
     padding: 20px 0;
-    margin-bottom: 40px;
-}
-
-.filter-group {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.filter-group select {
-    padding: 12px 20px;
-    border: 2px solid #ddd;
-    border-radius: 25px;
-    background: white;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: border-color 0.3s;
-}
-
-.filter-group select:hover {
-    border-color: #ff5722;
 }
 
 /* Products */
@@ -189,6 +167,8 @@ body {
     font-size: 1.1rem;
     margin-bottom: 10px;
     color: #333;
+    height: 48px;
+    overflow: hidden;
 }
 
 .product-price {
@@ -245,6 +225,7 @@ body {
     padding: 40px;
     font-size: 1.2rem;
     color: #666;
+    grid-column: 1 / -1;
 }
 
 /* About */
@@ -265,9 +246,11 @@ body {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 3rem;
+    align-items: center;
 }
 
 .about-text h3 {
+    margin-top: 1.5rem;
     margin-bottom: 1rem;
     color: #333;
 }
@@ -279,18 +262,22 @@ body {
 
 .about-text ul {
     list-style: none;
-    margin-left: 1rem;
+    padding-left: 0;
 }
 
 .about-text li {
     margin-bottom: 0.5rem;
     color: #666;
+    position: relative;
+    padding-left: 25px;
 }
 
 .about-text li:before {
-    content: "✓ ";
+    content: "✓";
     color: #ff5722;
     font-weight: bold;
+    position: absolute;
+    left: 0;
 }
 
 .about-stats {
@@ -353,7 +340,7 @@ body {
     color: #ccc;
 }
 
-/* ===== CORREÇÕES DO MODAL ===== */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -363,18 +350,17 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    overflow: hidden;
+    overflow: auto;
+    padding-top: 50px;
 }
 
 .modal-content {
     background-color: white;
-    margin: 2% auto;
+    margin: 5% auto;
     padding: 2rem;
     border-radius: 15px;
     width: 90%;
     max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
     position: relative;
     animation: modalFadeIn 0.3s ease;
 }
@@ -384,33 +370,36 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+}
+
 .modal-product {
     text-align: center;
 }
 
-/* IMAGEM NO MODAL - CORRIGIDA */
 .modal-image-container {
     width: 100%;
-    max-height: 300px;
-    overflow: hidden;
-    border-radius: 10px;
+    height: 300px;
     margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f8f9fa;
 }
 
 .modal-image {
     max-width: 100%;
-    max-height: 300px;
-    width: auto;
-    height: auto;
+    max-height: 100%;
     object-fit: contain;
     border-radius: 8px;
 }
 
-/* CONTEÚDO DO MODAL */
 .modal-product h2 {
     font-size: 1.4rem;
     margin-bottom: 1rem;
@@ -427,28 +416,6 @@ body {
     flex-wrap: wrap;
 }
 
-.current-price {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #ff5722;
-}
-
-.original-price {
-    text-decoration: line-through;
-    color: #999;
-    font-size: 1.2rem;
-}
-
-.discount {
-    background: #ff5722;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-/* DETALHES DO PRODUTO */
 .modal-details {
     text-align: left;
     margin: 1.5rem 0;
@@ -471,7 +438,6 @@ body {
     min-width: 120px;
 }
 
-/* BOTÕES DO MODAL */
 .modal-actions {
     display: flex;
     gap: 1rem;
@@ -480,9 +446,7 @@ body {
     flex-wrap: wrap;
 }
 
-.buy-button {
-    background: #ff5722;
-    color: white;
+.buy-button, .close-button {
     padding: 15px 30px;
     border-radius: 25px;
     text-decoration: none;
@@ -491,9 +455,11 @@ body {
     border: none;
     cursor: pointer;
     font-size: 1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+}
+
+.buy-button {
+    background: #ff5722;
+    color: white;
 }
 
 .buy-button:hover {
@@ -505,13 +471,6 @@ body {
 .close-button {
     background: #666;
     color: white;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s;
-    font-size: 1rem;
 }
 
 .close-button:hover {
@@ -521,62 +480,14 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .header .container {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .hero-content h2 {
-        font-size: 2rem;
-    }
-    
-    .search-box {
-        flex-direction: column;
-    }
-    
-    .filter-group {
-        flex-direction: column;
-    }
-    
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .about-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
-    }
+    .header .container { flex-direction: column; gap: 1rem; }
+    .hero-content h2 { font-size: 2rem; }
+    .search-box, .filter-group { flex-direction: column; }
+    .products-grid, .about-content, .footer-content { grid-template-columns: 1fr; }
+    .modal-content { width: 95%; margin: 10% auto; }
 }
 
-@media (max-width: 480px) {
-    .container {
-        padding: 0 15px;
-    }
-    
-    .hero {
-        padding: 100px 0 40px;
-    }
-    
-    .hero-content h2 {
-        font-size: 1.8rem;
-    }
-    
-    .products,
-    .about {
-        margin: 10px;
-        padding: 40px 0;
-    }
-}
-
-/* ===== ESTILOS DO CHATBOT ===== */
+/* Chatbot Styles */
 .chat-widget {
     position: fixed;
     bottom: 25px;
@@ -596,11 +507,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .chat-toggle-button.hidden {
     transform: scale(0);
+    opacity: 0;
 }
 
 .chat-toggle-button:hover {
@@ -649,10 +561,6 @@ body {
     color: white;
     font-size: 1.5rem;
     cursor: pointer;
-    opacity: 0.8;
-}
-.chat-header #chat-close-button:hover {
-    opacity: 1;
 }
 
 .chat-messages {
@@ -666,7 +574,7 @@ body {
 
 .message {
     margin-bottom: 1rem;
-    max-width: 80%;
+    max-width: 85%;
     padding: 10px 15px;
     border-radius: 18px;
     line-height: 1.4;
@@ -687,11 +595,20 @@ body {
     align-self: flex-end;
 }
 
+.message a {
+    color: #007bff;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.message.bot a {
+    color: #ff5722;
+}
+
 .chat-input-container {
     display: flex;
     padding: 1rem;
     border-top: 1px solid #ddd;
-    background: #fff;
 }
 
 #chatInput {
@@ -700,23 +617,69 @@ body {
     border: 1px solid #ccc;
     border-radius: 20px;
     margin-right: 10px;
-    outline: none;
-    font-size: 1rem;
 }
 
-#chatInput:focus {
-    border-color: #ff5722;
+/* ===== NOVA SEÇÃO DE CUPONS ===== */
+.coupons-section {
+    padding: 40px 0;
+    background: rgba(255, 255, 255, 0.1);
 }
 
-.chat-input-container button {
+.coupons-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.coupons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    justify-content: center;
+}
+
+.coupon-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.coupon-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.coupon-card h3 {
+    color: #ff5722;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.coupon-card p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.coupon-button {
+    display: inline-block;
     background: #ff5722;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
+    padding: 12px 25px;
+    border-radius: 25px;
+    text-decoration: none;
     font-weight: 600;
+    transition: background 0.3s;
 }
-.chat-input-container button:hover {
+
+.coupon-button:hover {
     background: #e64a19;
 }

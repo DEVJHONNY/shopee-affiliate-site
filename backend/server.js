@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 
 // Rota principal
 app.get('/', (req, res) => {
-    res.json({ 
+    res.json({
         message: '🚀 API PromoShopee funcionando!',
         version: '1.0.0',
         timestamp: new Date().toISOString(),
@@ -81,18 +81,18 @@ app.post('/api/chat', async (req, res) => {
 
 // Rota de teste
 app.get('/api/test', (req, res) => {
-    res.json({ 
+    res.json({
         success: true,
         message: '✅ API está funcionando perfeitamente!',
-        appId: APP_ID, //
+        appId: APP_ID,
         timestamp: new Date().toISOString()
     });
 });
 
 // Health check
 app.get('/health', (req, res) => {
-    res.status(200).json({ 
-        status: '✅ OK', 
+    res.status(200).json({
+        status: '✅ OK',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         environment: process.env.NODE_ENV || 'development'
@@ -104,15 +104,15 @@ app.post('/api/products', async (req, res) => {
     try {
         const { query, category, page = 1, sort = 'relevance' } = req.body;
         const timestamp = Math.floor(Date.now() / 1000);
-        
+
         const graphqlQuery = {
             query: `{
                 productOfferV2(
-                    keyword: "${query || 'promoção'}"
-                    ${category ? `category: "${category}"` : ''}
-                    sortType: ${getSortType(sort)}
-                    page: ${page}
-                    limit: 20
+                    keyword: "${query || 'promoção'}",
+                    ${category ? `category: "${category}",` : ''}
+                    sortType: ${getSortType(sort)},
+                    page: ${page},
+                    limit: 20,
                     isAMSOffer: true
                 ) {
                     nodes {
@@ -152,21 +152,23 @@ app.post('/api/products', async (req, res) => {
         });
 
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Erro da API Shopee:', errorText);
             throw new Error(`Erro HTTP: ${response.status}`);
         }
 
         const data = await response.json();
-        
+
         if (data.errors) {
             console.error('❌ Erros da API:', data.errors);
-            return res.status(400).json({ 
-                success: false, 
-                errors: data.errors 
+            return res.status(400).json({
+                success: false,
+                errors: data.errors
             });
         }
 
         console.log(`✅ ${data.data?.productOfferV2?.nodes?.length || 0} produtos recebidos`);
-        
+
         res.json({
             success: true,
             data: data.data,
@@ -175,8 +177,8 @@ app.post('/api/products', async (req, res) => {
 
     } catch (error) {
         console.error('❌ Erro:', error.message);
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             error: error.message,
             message: 'Erro ao conectar com a API da Shopee'
         });
@@ -201,7 +203,7 @@ app.listen(PORT, () => {
     console.log('🚀 Servidor iniciado!');
     console.log(`📡 Porta: ${PORT}`);
     console.log(`🌐 URL: http://localhost:${PORT}`);
-    console.log(`🔐 AppID: ${APP_ID}`); //
+    console.log(`🔐 AppID: ${APP_ID}`);
     console.log(`⏰ ${new Date().toISOString()}`);
 });
 
