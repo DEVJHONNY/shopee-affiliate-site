@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
         timestamp: new Date().toISOString(),
         endpoints: {
             products: 'POST /api/products',
-            chat: 'POST /api/chat', // Nova rota
+            chat: 'POST /api/chat',
             health: 'GET /health',
             test: 'GET /api/test'
         }
@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 // Nova rota para o chat com Gemini
 app.post('/api/chat', async (req, res) => {
     try {
-        const { message, history } = req.body; // Recebe a mensagem e o histórico
+        const { message, history } = req.body;
 
         if (!message) {
             return res.status(400).json({ error: 'A mensagem é obrigatória.' });
@@ -51,7 +51,6 @@ app.post('/api/chat', async (req, res) => {
 
         const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
-        // Contexto para o assistente
         const chat = model.startChat({
             history: [
                 {
@@ -62,7 +61,7 @@ app.post('/api/chat', async (req, res) => {
                     role: "model",
                     parts: [{ text: "Olá! Eu sou o assistente do Shopee Treasures. Como posso te ajudar a encontrar as melhores promoções hoje?" }],
                 },
-                ...(history || []), // Adiciona o histórico da conversa anterior
+                ...(history || []),
             ],
         });
 
@@ -146,7 +145,7 @@ app.post('/api/products', async (req, res) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `SHA256 Credential=${APP_ID}, Timestamp=${timestamp}, Signature=${signature}`
+                'Authorization': `SHA265 Credential=${APP_ID}, Timestamp=${timestamp}, Signature=${signature}`
             },
             body: payload
         });
