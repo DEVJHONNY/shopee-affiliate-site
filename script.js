@@ -56,13 +56,11 @@ async function loadInitialProducts() {
 
 // Buscar produtos da API
 async function fetchShopeeProducts(params) {
-    if (!SHOPEE_CONFIG.USE_REAL_API) {
-        console.log('📦 Usando dados de fallback');
-        return FALLBACK_PRODUCTS;
-    }
-
     try {
         console.log('🔍 Buscando produtos:', params);
+        
+        // Mostrar loading
+        showLoading();
         
         const response = await fetch(`${SHOPEE_CONFIG.BACKEND_URL}/api/products`, {
             method: 'POST',
@@ -73,19 +71,41 @@ async function fetchShopeeProducts(params) {
         });
 
         if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Erro HTTP: ${response.status}`);
         }
 
         const data = await response.json();
         
         if (data.errors) {
-            console.error('Erros da API:', data.errors);
-            throw new Error(data.errors[0].message);
+            console.error('❌ Erros da API:', data.errors);
+            showError('Erro na API Shopee: ' + (data.errors[0]?.message || 'Erro desconhecido'));
+            return FALLBACK_PRODUCTS;
         }
 
-        return data.data?.productOfferV2?.nodes || FALLBACK_PRODUCTS;
+        if (!data.data?.productOfferV2?.nodes || data.data.productOfferV2.nodes.length === 0) {
+            console.log('📭 Nenhum produto encontrado na API');
+            showInfo('Nenhum produto encontrado. Mostrando produtos de exemplo.');
+            return FALLBACK_PRODUCTS;
+        }
+
+        console.log(`✅ ${data.data.productOfferV2.nodes.length} produtos recebidos`);
+        return data.data.productOfferV2.nodes;
+
     } catch (error) {
         console.error('❌ Erro ao buscar produtos:', error);
+        
+        // Mostrar mensagem de erro amigável
+        if (error.message.includes('Failed to fetch')) {
+            showError('Erro de conexão. Verifique sua internet e tente novamente.');
+        } else if (error.message.includes('400')) {
+            showError('Erro na requisição. Tente novamente em alguns instantes.');
+        } else if (error.message.includes('500')) {
+            showError('Servidor temporariamente indisponível. Tente novamente em alguns minutos.');
+        } else {
+            showError('Erro inesperado: ' + error.message);
+        }
+        
         return FALLBACK_PRODUCTS;
     }
 }
@@ -216,10 +236,12 @@ function openProductModal(productId) {
     
     const modalContent = `
         <div class="modal-product">
-            <img src="${product.imageUrl}" 
-                 alt="${product.productName}" 
-                 class="modal-image"
-                 onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'">
+            <div class="modal-image-container">
+                <img src="${product.imageUrl || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" 
+                     alt="${product.productName}" 
+                     class="modal-image"
+                     onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'">
+            </div>
             
             <h2>${product.productName}</h2>
             
@@ -247,7 +269,7 @@ function openProductModal(productId) {
                     🛒 Comprar na Shopee
                 </a>
                 <button onclick="closeModal()" class="close-button">
-                    Fechar
+                    ✕ Fechar
                 </button>
             </div>
         </div>
@@ -255,11 +277,25 @@ function openProductModal(productId) {
     
     document.getElementById('modalContent').innerHTML = modalContent;
     document.getElementById('productModal').style.display = 'block';
+    
+    // Adiciona overlay
+    if (!document.getElementById('modalOverlay')) {
+        const overlay = document.createElement('div');
+        overlay.id = 'modalOverlay';
+        overlay.className = 'modal-overlay';
+        overlay.onclick = closeModal;
+        document.body.appendChild(overlay);
+    }
 }
 
-// Fechar modal
 function closeModal() {
     document.getElementById('productModal').style.display = 'none';
+    
+    // Remove overlay
+    const overlay = document.getElementById('modalOverlay');
+    if (overlay) {
+        overlay.remove();
+    }
 }
 
 // Mostrar loading
@@ -269,6 +305,63 @@ function showLoading() {
             <div>🔍 Buscando produtos...</div>
         </div>
     `;
+}
+
+// Funções de feedback para o usuário
+function showError(message) {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = `
+        <div class="error-message">
+            <strong>⚠️ Erro:</strong> ${message}
+            <br>
+            <small>Mostrando produtos de exemplo...</small>
+        </div>
+        ${createProductsGrid(FALLBACK_PRODUCTS)}
+    `;
+}
+
+function showInfo(message) {
+    const grid = document.getElementById('productsGrid');
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'no-products';
+    infoDiv.innerHTML = `
+        <i>🔍</i>
+        <p>${message}</p>
+    `;
+    grid.appendChild(infoDiv);
+}
+
+// Função auxiliar para criar grid de produtos
+function createProductsGrid(products) {
+    return products.map(product => `
+        <div class="product-card" onclick="openProductModal(${product.itemId})">
+            <img src="${product.imageUrl || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" 
+                 alt="${product.productName}" 
+                 class="product-image"
+                 onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'">
+            
+            <div class="product-info">
+                <h3>${product.productName}</h3>
+                
+                <div class="product-price">
+                    <span class="current-price">R$ ${parseFloat(product.priceMin).toFixed(2)}</span>
+                    ${product.priceMax > product.priceMin ? `
+                        <span class="original-price">R$ ${parseFloat(product.priceMax).toFixed(2)}</span>
+                        <span class="discount">-${calculateDiscount(product.priceMin, product.priceMax)}%</span>
+                    ` : ''}
+                </div>
+                
+                <div class="product-meta">
+                    <div class="rating">
+                        ⭐ ${parseFloat(product.ratingStar || 4.5).toFixed(1)}
+                    </div>
+                    <div class="sales">
+                        ${formatSales(product.sales)} vendas
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
 }
 
 // Sistema de Chat
