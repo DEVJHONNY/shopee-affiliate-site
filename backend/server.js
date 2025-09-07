@@ -49,7 +49,7 @@ app.post('/api/chat', async (req, res) => {
             return res.status(400).json({ error: 'A mensagem é obrigatória.' });
         }
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
         // Contexto para o assistente
         const chat = model.startChat({
