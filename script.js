@@ -77,14 +77,14 @@ async function fetchShopeeProducts(params) {
 
         const data = await response.json();
         
-        if (data.errors) {
-            console.error('❌ Erros da API:', data.errors);
+        if (data.errors || !data.success) {
+            console.error('❌ Erros da API:', data.errors || 'Requisição falhou');
             return FALLBACK_PRODUCTS;
         }
 
         if (!data.data?.productOfferV2?.nodes || data.data.productOfferV2.nodes.length === 0) {
             console.log('📭 Nenhum produto encontrado na API');
-            return FALLBACK_PRODUCTS;
+            return []; // Retorna array vazio em vez de fallback
         }
 
         return data.data.productOfferV2.nodes;
@@ -100,7 +100,7 @@ function displayProducts(products) {
     const grid = document.getElementById('productsGrid');
     
     if (!products || products.length === 0) {
-        grid.innerHTML = '<div class="loading">Nenhum produto encontrado.</div>';
+        grid.innerHTML = '<div class="loading">Nenhum produto encontrado. Tente uma nova busca!</div>';
         return;
     }
 
@@ -153,6 +153,7 @@ function openProductModal(itemId) {
     
     const modalContent = document.getElementById('modalContent');
     modalContent.innerHTML = `
+        <span class="close" onclick="closeModal()">&times;</span>
         <div class="modal-product">
             <div class="modal-image-container">
                 <img src="${product.imageUrl}" alt="${product.productName}" class="modal-image">
@@ -169,11 +170,11 @@ function openProductModal(itemId) {
             </div>
             <div class="modal-actions">
                 <a href="${product.offerLink}${SITE_CONFIG.AFFILIATE_TAG}" target="_blank" class="buy-button">🛒 Comprar na Shopee</a>
-                <button onclick="closeModal()" class="close-button">✕ Fechar</button>
+                <button onclick="closeModal()" class="close-button">Voltar</button>
             </div>
         </div>
     `;
-    document.getElementById('productModal').style.display = 'block';
+    document.getElementById('productModal').style.display = 'flex';
 }
 
 function closeModal() {
@@ -272,7 +273,8 @@ function addMessage(text, type) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}`;
     if (type.includes('typing')) messageDiv.id = 'typing-indicator';
-    messageDiv.innerHTML = text; // Usar innerHTML diretamente para renderizar o link
+    // Usar innerHTML diretamente para renderizar o link
+    messageDiv.innerHTML = text; 
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }

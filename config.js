@@ -3,7 +3,7 @@ const SHOPEE_CONFIG = {
     APP_ID: '18305010276',
     SECRET: 'LRINXLVGSVNOB2FW6FOHBOR6NPRRB3NW',
     API_URL: 'https://open-api.affiliate.shopee.com.br/graphql',
-    BACKEND_URL: 'https://shopee-backend-jrbl.onrender.com', // SERÁ ATUALIZADO
+    BACKEND_URL: 'https://shopee-backend-jrbl.onrender.com',
     USE_REAL_API: true,
     DEBUG_MODE: false
 };
@@ -16,18 +16,20 @@ const SITE_CONFIG = {
     AFFILIATE_TAG: '?affiliate_id=18305010276'
 };
 
-const FALLBACK_PRODUCTS = [/* ... mesmo conteúdo ... */];
+const FALLBACK_PRODUCTS = []; // Deixado em branco para simplicidade, adicione produtos se necessário.
 
 const CHAT_CONFIG = {
     BOT_NAME: 'Assistente Shopee',
-    WELCOME_MESSAGE: 'Olá! Sou seu assistente de promoções. Digite "promoções" para ver as ofertas!',
+    WELCOME_MESSAGE: "Olá! Sou seu assistente de promoções. Digite 'promoções', 'cupons' ou 'moda' para começar!",
     RESPONSES: {
-        'promoções': 'Aqui estão nossas promoções em destaque! 🎯',
-        'eletrônicos': 'Confira eletrônicos com até 50% OFF! 📱',
-        'moda': 'Moda com até 70% OFF! 👗',
-        'desconto': 'Produtos com até 80% OFF! 🔥',
-        'frete': 'Frete grátis em compras acima de R$ 99! 🚚',
-        'default': 'Digite "promoções" para ver ofertas!'
+        'promoções': 'Buscando as melhores promoções de "promoção" para você agora! 🎯',
+        'eletrônicos': 'Pesquisando os eletrônicos em promoção! Segundos... 📱',
+        'moda': 'Focando nas ofertas de moda para você! 👗',
+        'desconto': 'Mostrando os produtos com os maiores descontos! Prepare-se para economizar. 🔥',
+        'menor_preco': 'Claro! Ordenei os produtos pelo menor preço para você. Confira os resultados! 💸',
+        'cupons': 'Para economizar ainda mais, aqui estão os links para as páginas de cupons: <a href="https://shopee.com.br/m/cupons-diarios" target="_blank" rel="noopener noreferrer">Cupons Diários</a> | <a href="https://shopee.com.br/m/frete-gratis" target="_blank" rel="noopener noreferrer">Frete Grátis</a>',
+        'frete': 'A Shopee oferece cupons de frete grátis! Você pode encontrá-los na nossa seção de cupons. Quer que eu te mostre?',
+        'default': 'Não entendi. Você pode tentar perguntar sobre "promoções", "cupons" ou uma categoria como "eletrônicos".'
     }
 };
 
