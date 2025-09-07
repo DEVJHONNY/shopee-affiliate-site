@@ -4,39 +4,67 @@ const crypto = require('crypto');
 const fetch = require('node-fetch');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Suas credenciais da Shopee
+// Configurações
+const SHOPEE_API = 'https://open-api.affiliate.shopee.com.br/graphql';
 const APP_ID = '18305010276';
 const SECRET = 'LRINXLVGSVNOB2FW6FOHBOR6NPRRB3NW';
 
-// Gerar assinatura SHA256
-function generateSignature(payload, timestamp) {
-    const stringToSign = APP_ID + timestamp + payload + SECRET;
-    return crypto.createHash('sha256').update(stringToSign).digest('hex');
-}
+// Middleware de logging
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    next();
+});
 
-// Endpoint para buscar produtos
+// Rota principal
+app.get('/', (req, res) => {
+    res.json({ 
+        message: '🚀 API PromoShopee funcionando!',
+        version: '1.0.0',
+        timestamp: new Date().toISOString(),
+        endpoints: {
+            products: 'POST /api/products',
+            health: 'GET /health',
+            test: 'GET /api/test'
+        }
+    });
+});
+
+// Rota de teste
+app.get('/api/test', (req, res) => {
+    res.json({ 
+        success: true,
+        message: '✅ API está funcionando perfeitamente!',
+        appId: APP_ID,
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ 
+        status: '✅ OK', 
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        environment: process.env.NODE_ENV || 'development'
+    });
+});
+
+// Rota para buscar produtos
 app.post('/api/products', async (req, res) => {
     try {
-        console.log('🚀 Recebendo requisição para buscar produtos...');
-        
-        const { query = 'promoção', category = '', page = 0 } = req.body;
+        const { query, category, page = 1, sort = 'relevance' } = req.body;
         const timestamp = Math.floor(Date.now() / 1000);
         
-        console.log('📝 Parâmetros:', { query, category, page });
-        
-        // Query GraphQL
-        const graphqlQuery = `
-            query {
+        const graphqlQuery = {
+            query: `{
                 productOfferV2(
-                    keyword: "${query}"
-                    sortType: 1
-                    page: ${page + 1}
+                    keyword: "${query || 'promoção'}"
+                    ${category ? `category: "${category}"` : ''}
+                    sortType: ${getSortType(sort)}
+                    page: ${page}
                     limit: 20
                     isAMSOffer: true
                 ) {
@@ -46,21 +74,13 @@ app.post('/api/products', async (req, res) => {
                         priceMin
                         priceMax
                         commissionRate
-                        sellerCommissionRate
-                        shopeeCommissionRate
-                        commission
-                        sales
-                        ratingStar
-                        priceDiscountRate
                         imageUrl
                         productLink
                         offerLink
                         shopId
                         shopName
-                        shopType
-                        productCatIds
-                        periodStartTime
-                        periodEndTime
+                        sales
+                        ratingStar
                     }
                     pageInfo {
                         page
@@ -68,66 +88,74 @@ app.post('/api/products', async (req, res) => {
                         hasNextPage
                     }
                 }
-            }
-        `;
-        
-        const payload = JSON.stringify({ query: graphqlQuery });
-        const signature = generateSignature(payload, timestamp);
-        
-        console.log('🔐 Assinatura gerada:', signature);
-        
-        // Fazer requisição para API da Shopee
-        const response = await fetch('https://open-api.affiliate.shopee.com.br/graphql', {
+            }`
+        };
+
+        const payload = JSON.stringify(graphqlQuery);
+        const signatureString = APP_ID + timestamp + payload + SECRET;
+        const signature = crypto.createHash('sha256').update(signatureString).digest('hex');
+
+        const response = await fetch(SHOPEE_API, {
             method: 'POST',
             headers: {
-                'Authorization': `SHA256 Credential=${APP_ID}, Timestamp=${timestamp}, Signature=${signature}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `SHA256 Credential=${APP_ID}, Timestamp=${timestamp}, Signature=${signature}`
             },
             body: payload
         });
-        
-        console.log('📡 Status da resposta:', response.status);
-        
+
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            throw new Error(`Erro HTTP: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        console.log('✅ Dados recebidos da API:', data);
         
-        // Retornar dados para o frontend
+        if (data.errors) {
+            console.error('❌ Erros da API:', data.errors);
+            return res.status(400).json({ 
+                success: false, 
+                errors: data.errors 
+            });
+        }
+
+        console.log(`✅ ${data.data?.productOfferV2?.nodes?.length || 0} produtos recebidos`);
+        
         res.json({
             success: true,
-            data: data,
+            data: data.data,
             timestamp: new Date().toISOString()
         });
-        
+
     } catch (error) {
-        console.error('❌ Erro ao buscar produtos:', error);
-        res.status(500).json({
-            success: false,
+        console.error('❌ Erro:', error.message);
+        res.status(500).json({ 
+            success: false, 
             error: error.message,
-            timestamp: new Date().toISOString()
+            message: 'Erro ao conectar com a API da Shopee'
         });
     }
 });
 
-// Endpoint de teste
-app.get('/api/test', (req, res) => {
-    res.json({
-        message: '🚀 Backend da Shopee API funcionando!',
-        timestamp: new Date().toISOString(),
-        appId: APP_ID
-    });
-});
+// Helper para ordenação
+function getSortType(sort) {
+    const sortTypes = {
+        'relevance': 1,
+        'price_asc': 4,
+        'price_desc': 3,
+        'discount': 5,
+        'sales': 2
+    };
+    return sortTypes[sort] || 1;
+}
 
-// Iniciar servidor
-app.listen(PORT, '0.0.0.0', () => {
-    console.log('🚀 Servidor rodando na porta', PORT);
-    console.log('📱 AppID:', APP_ID);
-    console.log('🌐 Ambiente:', process.env.NODE_ENV || 'development');
-    console.log('🔗 Teste: http://localhost:' + PORT + '/api/test');
-    console.log('🛍️ API: http://localhost:' + PORT + '/api/products');
+// Porta do Render
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+    console.log('🚀 Servidor iniciado!');
+    console.log(`📡 Porta: ${PORT}`);
+    console.log(`🌐 URL: http://localhost:${PORT}`);
+    console.log(`🔐 AppID: ${APP_ID}`);
+    console.log(`⏰ ${new Date().toISOString()}`);
 });
 
 module.exports = app;

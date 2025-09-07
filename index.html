@@ -3,172 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promoções Shopee - Ofertas Imperdíveis</title>
+    <title>Promoções Shopee - Afiliado</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">
-                <i class="fas fa-shopping-bag"></i>
-                <h1>Promoções Shopee</h1>
+                <h1>🛍️ PromoShopee</h1>
+                <p>As melhores promoções da Shopee</p>
             </div>
             <nav class="nav">
-                <a href="#home" class="nav-link active">Início</a>
-                <a href="#promocoes" class="nav-link">Promoções</a>
-                <a href="#chat" class="nav-link">Chat</a>
+                <a href="#inicio" class="nav-link">Início</a>
+                <a href="#produtos" class="nav-link">Produtos</a>
                 <a href="#sobre" class="nav-link">Sobre</a>
+                <a href="#contato" class="nav-link">Contato</a>
             </nav>
         </div>
     </header>
 
-    <main class="main">
-        <!-- Seção Hero -->
-        <section id="home" class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h2>🔥 Ofertas Imperdíveis da Shopee</h2>
-                    <p>Descubra as melhores promoções e economize muito nas suas compras!</p>
-                    <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Buscar produtos...">
-                        <button id="searchBtn"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Filtros -->
-        <section class="filters">
-            <div class="container">
-                <div class="filter-group">
-                    <select id="categoryFilter">
-                        <option value="">Todas as categorias</option>
-                        <option value="electronics">Eletrônicos</option>
-                        <option value="fashion">Moda</option>
-                        <option value="home">Casa e Jardim</option>
-                        <option value="beauty">Beleza</option>
-                        <option value="sports">Esportes</option>
-                    </select>
-                    <select id="priceFilter">
-                        <option value="">Qualquer preço</option>
-                        <option value="0-50">Até R$ 50</option>
-                        <option value="50-100">R$ 50 - R$ 100</option>
-                        <option value="100-200">R$ 100 - R$ 200</option>
-                        <option value="200+">Acima de R$ 200</option>
-                    </select>
-                    <select id="sortFilter">
-                        <option value="relevance">Relevância</option>
-                        <option value="price_low">Menor preço</option>
-                        <option value="price_high">Maior preço</option>
-                        <option value="rating">Melhor avaliação</option>
-                    </select>
-                </div>
-            </div>
-        </section>
-
-        <!-- Produtos -->
-        <section id="promocoes" class="products">
-            <div class="container">
-                <h2>🛍️ Produtos em Promoção</h2>
-                <div class="loading" id="loading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>Carregando produtos...</p>
-                </div>
-                <div class="products-grid" id="productsGrid">
-                    <!-- Produtos serão carregados aqui via JavaScript -->
-                </div>
-                <div class="load-more">
-                    <button id="loadMoreBtn" class="btn btn-primary">Carregar Mais Produtos</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Chat de Promoções -->
-        <section id="chat" class="chat-section">
-            <div class="container">
-                <h2>💬 Chat de Promoções</h2>
-                <div class="chat-container">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message bot-message">
-                            <div class="message-content">
-                                <i class="fas fa-robot"></i>
-                                <p>Olá! Sou seu assistente de promoções da Shopee. Digite "promoções" para ver as ofertas do dia!</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-input">
-                        <input type="text" id="chatInput" placeholder="Digite sua mensagem...">
-                        <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sobre -->
-        <section id="sobre" class="about">
-            <div class="container">
-                <h2>📱 Sobre o Site</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>Este site foi criado para trazer as melhores promoções da Shopee diretamente para você!</p>
-                        <p>Como afiliado oficial da Shopee, oferecemos:</p>
-                        <ul>
-                            <li>✅ Produtos com preços especiais</li>
-                            <li>✅ Ofertas atualizadas diariamente</li>
-                            <li>✅ Chat interativo para dúvidas</li>
-                            <li>✅ Links seguros e confiáveis</li>
-                        </ul>
-                    </div>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>1000+</h3>
-                            <p>Produtos</p>
-                        </div>
-                        <div class="stat">
-                            <h3>24/7</h3>
-                            <p>Atualizações</p>
-                        </div>
-                        <div class="stat">
-                            <h3>100%</h3>
-                            <p>Seguro</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
         <div class="container">
-            <p>&copy; 2024 Promoções Shopee. Todos os direitos reservados.</p>
-            <p>Site de afiliado oficial da Shopee</p>
+            <div class="hero-content">
+                <h2>🔥 Promoções Exclusivas</h2>
+                <p>Encontre os melhores produtos com descontos incríveis na Shopee</p>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar produtos...">
+                    <button onclick="searchProducts()">🔍 Buscar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtros -->
+    <section class="filters">
+        <div class="container">
+            <div class="filter-group">
+                <select id="categoryFilter" onchange="filterProducts()">
+                    <option value="">Todas Categorias</option>
+                    <option value="eletronicos">Eletrônicos</option>
+                    <option value="moda">Moda</option>
+                    <option value="casa">Casa e Decoração</option>
+                    <option value="beleza">Beleza</option>
+                    <option value="esportes">Esportes</option>
+                </select>
+                
+                <select id="sortFilter" onchange="filterProducts()">
+                    <option value="relevance">Relevância</option>
+                    <option value="price_asc">Menor Preço</option>
+                    <option value="price_desc">Maior Preço</option>
+                    <option value="discount">Maior Desconto</option>
+                </select>
+
+                <select id="priceFilter" onchange="filterProducts()">
+                    <option value="">Faixa de Preço</option>
+                    <option value="0-50">Até R$ 50</option>
+                    <option value="50-100">R$ 50 - R$ 100</option>
+                    <option value="100-200">R$ 100 - R$ 200</option>
+                    <option value="200-500">R$ 200 - R$ 500</option>
+                    <option value="500+">Acima de R$ 500</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos -->
+    <section id="produtos" class="products">
+        <div class="container">
+            <h2>🎯 Produtos em Destaque</h2>
+            <div class="products-grid" id="productsGrid">
+                <div class="loading">Carregando produtos...</div>
+            </div>
+            <div class="pagination" id="pagination">
+                <button onclick="loadMoreProducts()" class="load-more">Carregar Mais</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat de Promoções -->
+    <section class="chat-promo">
+        <div class="container">
+            <h2>💬 Chat de Promoções</h2>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        <p>Olá! Sou seu assistente de promoções. Digite "promoções" para ver as ofertas ou me pergunte sobre produtos específicos!</p>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Digite sua mensagem...">
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="sobre" class="about">
+        <div class="container">
+            <h2>📋 Sobre</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Como funciona?</h3>
+                    <p>Somos afiliados da Shopee e trazemos as melhores promoções para você. Todas as compras realizadas através dos nossos links geram comissão, o que nos ajuda a manter o site.</p>
+                    
+                    <h3>💰 Programa de Afiliados</h3>
+                    <p>AppID: 18305010276</p>
+                    <p>Você paga o mesmo preço e nós recebemos uma pequena comissão pela indicação.</p>
+
+                    <h3>⭐ Vantagens</h3>
+                    <ul>
+                        <li>Preços com descontos exclusivos</li>
+                        <li>Produtos verificados e selecionados</li>
+                        <li>Links seguros e confiáveis</li>
+                        <li>Suporte via chat</li>
+                    </ul>
+                </div>
+                <div class="about-stats">
+                    <div class="stat">
+                        <h4>1000+</h4>
+                        <p>Produtos</p>
+                    </div>
+                    <div class="stat">
+                        <h4>99%</h4>
+                        <p>Avaliações Positivas</p>
+                    </div>
+                    <div class="stat">
+                        <h4>24/7</h4>
+                        <p>Promoções Ativas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🛍️ PromoShopee</h3>
+                    <p>As melhores promoções da Shopee em um só lugar.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <p>Email: contato@promoshopee.com</p>
+                    <p>WhatsApp: (11) 99999-9999</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <a href="#inicio">Início</a>
+                    <a href="#produtos">Produtos</a>
+                    <a href="#sobre">Sobre</a>
+                    <a href="#contato">Contato</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PromoShopee. Todos os direitos reservados.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Modal do Produto -->
+    <!-- Modal de Produto -->
     <div id="productModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="modal-body">
-                <div class="product-image">
-                    <img id="modalProductImage" src="" alt="">
-                </div>
-                <div class="product-details">
-                    <h3 id="modalProductName"></h3>
-                    <div class="price-info">
-                        <span class="current-price" id="modalCurrentPrice"></span>
-                        <span class="original-price" id="modalOriginalPrice"></span>
-                        <span class="discount" id="modalDiscount"></span>
-                    </div>
-                    <p id="modalProductDescription"></p>
-                    <div class="rating" id="modalRating"></div>
-                    <a id="modalProductLink" href="#" target="_blank" class="btn btn-primary">
-                        <i class="fas fa-external-link-alt"></i>
-                        Ver na Shopee
-                    </a>
-                </div>
-            </div>
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
         </div>
     </div>
 
