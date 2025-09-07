@@ -126,22 +126,20 @@ function displayProducts(products) {
 const calculateDiscount = (current, original) => Math.round(((original - current) / original) * 100);
 const formatSales = sales => (sales >= 1000) ? `${(sales / 1000).toFixed(1)}k` : sales;
 
-// Ações de busca e filtro
+// Ações de busca
 async function searchProducts() {
     const searchTerm = document.getElementById('searchInput').value.trim();
+    // Define os parâmetros para uma busca padrão a partir da barra de pesquisa
     searchParams.query = searchTerm || SITE_CONFIG.DEFAULT_SEARCH_TERM;
+    searchParams.category = '';
+    searchParams.sort = 'relevance';
     
-    showLoading();
-    const products = await fetchShopeeProducts(searchParams);
-    currentProducts = products;
-    displayProducts(products);
+    await triggerSearch();
     document.getElementById('produtos').scrollIntoView({ behavior: 'smooth' });
 }
 
-async function filterProducts() {
-    searchParams.category = document.getElementById('categoryFilter').value;
-    searchParams.sort = document.getElementById('sortFilter').value;
-    
+// Função genérica para disparar a busca com os parâmetros atuais
+async function triggerSearch() {
     showLoading();
     const products = await fetchShopeeProducts(searchParams);
     currentProducts = products;
@@ -209,31 +207,37 @@ function handleLocalCommand(message) {
     const lowerMessage = message.toLowerCase();
     
     if (lowerMessage.includes('menor preço')) {
-        document.getElementById('sortFilter').value = 'price_asc';
-        filterProducts();
+        searchParams.sort = 'price_asc';
+        triggerSearch();
         return CHAT_CONFIG.RESPONSES.menor_preco;
     }
     if (lowerMessage.includes('cupom') || lowerMessage.includes('cupons') || lowerMessage.includes('redirecione')) {
         return CHAT_CONFIG.RESPONSES.cupons;
     }
     if (lowerMessage.includes('promo') || lowerMessage.includes('ofert')) {
-        document.getElementById('searchInput').value = 'promoção';
-        searchProducts();
+        searchParams.query = 'promoção';
+        searchParams.category = '';
+        searchParams.sort = 'relevance';
+        triggerSearch();
         return CHAT_CONFIG.RESPONSES.promoções;
     }
     if (lowerMessage.includes('eletrôn') || lowerMessage.includes('celular')) {
-        document.getElementById('categoryFilter').value = 'eletronicos';
-        filterProducts();
+        searchParams.query = 'eletrônicos';
+        searchParams.category = 'eletronicos';
+        searchParams.sort = 'relevance';
+        triggerSearch();
         return CHAT_CONFIG.RESPONSES.eletrônicos;
     }
     if (lowerMessage.includes('moda') || lowerMessage.includes('roupa')) {
-        document.getElementById('categoryFilter').value = 'moda';
-        filterProducts();
+        searchParams.query = 'moda';
+        searchParams.category = 'moda';
+        searchParams.sort = 'relevance';
+        triggerSearch();
         return CHAT_CONFIG.RESPONSES.moda;
     }
     if (lowerMessage.includes('desconto') || lowerMessage.includes('barato')) {
-        document.getElementById('sortFilter').value = 'discount';
-        filterProducts();
+        searchParams.sort = 'discount';
+        triggerSearch();
         return CHAT_CONFIG.RESPONSES.desconto;
     }
     return null;
