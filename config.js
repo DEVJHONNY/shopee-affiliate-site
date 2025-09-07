@@ -3,7 +3,7 @@ const SHOPEE_CONFIG = {
     APP_ID: '18305010276',
     SECRET: 'LRINXLVGSVNOB2FW6FOHBOR6NPRRB3NW',
     API_URL: 'https://open-api.affiliate.shopee.com.br/graphql',
-    BACKEND_URL: 'https://shopee-backend.onrender.com', // SERÁ ATUALIZADO
+    BACKEND_URL: 'https://shopee-backend-jrbl.onrender.com', // SERÁ ATUALIZADO
     USE_REAL_API: true,
     DEBUG_MODE: false
 };
