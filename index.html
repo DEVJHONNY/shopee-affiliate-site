@@ -3,50 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Promoções Shopee - Afiliado</title>
+    <title>Shopee Treasures - Promoções Exclusivas</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">
-                <h1>🛍️ PromoShopee</h1>
-                <p>As melhores promoções da Shopee</p>
+                <h1>💎 Shopee Treasures</h1>
+                <p>Descubra tesouros com até 80% OFF</p>
             </div>
             <nav class="nav">
                 <a href="#inicio" class="nav-link">Início</a>
-                <a href="#produtos" class="nav-link">Produtos</a>
-                <a href="#sobre" class="nav-link">Sobre</a>
-                <a href="#contato" class="nav-link">Contato</a>
+                <a href="#produtos" class="nav-link">Promoções</a>
+                <a href="#sobre" class="nav-link">Como Funciona</a>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section id="inicio" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h2>🔥 Promoções Exclusivas</h2>
-                <p>Encontre os melhores produtos com descontos incríveis na Shopee</p>
+                <h2>💎 Tesouros Encontrados</h2>
+                <p>As melhores promoções da Shopee selecionadas para você</p>
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Buscar produtos...">
+                    <input type="text" id="searchInput" placeholder="Buscar tesouros...">
                     <button onclick="searchProducts()">🔍 Buscar</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Filtros -->
     <section class="filters">
         <div class="container">
             <div class="filter-group">
                 <select id="categoryFilter" onchange="filterProducts()">
-                    <option value="">Todas Categorias</option>
+                    <option value="">Todos os Tesouros</option>
                     <option value="eletronicos">Eletrônicos</option>
                     <option value="moda">Moda</option>
-                    <option value="casa">Casa e Decoração</option>
+                    <option value="casa">Casa</option>
                     <option value="beleza">Beleza</option>
                     <option value="esportes">Esportes</option>
                 </select>
@@ -57,117 +53,94 @@
                     <option value="price_desc">Maior Preço</option>
                     <option value="discount">Maior Desconto</option>
                 </select>
-
-                <select id="priceFilter" onchange="filterProducts()">
-                    <option value="">Faixa de Preço</option>
-                    <option value="0-50">Até R$ 50</option>
-                    <option value="50-100">R$ 50 - R$ 100</option>
-                    <option value="100-200">R$ 100 - R$ 200</option>
-                    <option value="200-500">R$ 200 - R$ 500</option>
-                    <option value="500+">Acima de R$ 500</option>
-                </select>
             </div>
         </div>
     </section>
 
-    <!-- Produtos -->
     <section id="produtos" class="products">
         <div class="container">
-            <h2>🎯 Produtos em Destaque</h2>
+            <h2>⭐ Tesouros em Destaque</h2>
             <div class="products-grid" id="productsGrid">
-                <div class="loading">Carregando produtos...</div>
-            </div>
-            <div class="pagination" id="pagination">
-                <button onclick="loadMoreProducts()" class="load-more">Carregar Mais</button>
+                <div class="loading">Procurando tesouros...</div>
             </div>
         </div>
     </section>
 
-    <!-- Chat de Promoções -->
-    <section class="chat-promo">
-        <div class="container">
-            <h2>💬 Chat de Promoções</h2>
-            <div class="chat-container">
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message bot">
-                        <p>Olá! Sou seu assistente de promoções. Digite "promoções" para ver as ofertas ou me pergunte sobre produtos específicos!</p>
-                    </div>
-                </div>
-                <div class="chat-input">
-                    <input type="text" id="chatInput" placeholder="Digite sua mensagem...">
-                    <button onclick="sendMessage()">Enviar</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sobre -->
     <section id="sobre" class="about">
         <div class="container">
-            <h2>📋 Sobre</h2>
+            <h2>📋 Como Encontrar Seus Tesouros</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <h3>Como funciona?</h3>
-                    <p>Somos afiliados da Shopee e trazemos as melhores promoções para você. Todas as compras realizadas através dos nossos links geram comissão, o que nos ajuda a manter o site.</p>
+                    <h3>💎 O que é o Shopee Treasures?</h3>
+                    <p>Somos caçadores de promoções! Navegamos pela Shopee para encontrar as melhores ofertas e trazemos até você.</p>
                     
-                    <h3>💰 Programa de Afiliados</h3>
-                    <p>AppID: 18305010276</p>
-                    <p>Você paga o mesmo preço e nós recebemos uma pequena comissão pela indicação.</p>
-
                     <h3>⭐ Vantagens</h3>
                     <ul>
-                        <li>Preços com descontos exclusivos</li>
-                        <li>Produtos verificados e selecionados</li>
-                        <li>Links seguros e confiáveis</li>
-                        <li>Suporte via chat</li>
+                        <li>Promoções reais verificadas</li>
+                        <li>Preços com descontos genuínos</li>
+                        <li>Produtos de qualidade</li>
+                        <li>Atualizações diárias</li>
                     </ul>
+
+                    <h3>🔍 Como usar</h3>
+                    <p>Use os filtros para encontrar tesouros por categoria ou busque por produtos específicos. Clique em qualquer produto para ver detalhes e comprar diretamente na Shopee.</p>
                 </div>
                 <div class="about-stats">
                     <div class="stat">
-                        <h4>1000+</h4>
-                        <p>Produtos</p>
+                        <h4>500+</h4>
+                        <p>Tesouros Encontrados</p>
                     </div>
                     <div class="stat">
-                        <h4>99%</h4>
-                        <p>Avaliações Positivas</p>
+                        <h4>80%</h4>
+                        <p>Desconto Máximo</p>
                     </div>
                     <div class="stat">
                         <h4>24/7</h4>
-                        <p>Promoções Ativas</p>
+                        <p>Atualizações</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="contato" class="footer">
+    <div class="chat-widget">
+        <button id="chat-toggle-button" class="chat-toggle-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+        <div id="chat-container" class="chat-container hidden">
+            <div class="chat-header">
+                <h3>Assistente de Promoções</h3>
+                <button id="chat-close-button">&times;</button>
+            </div>
+            <div id="chatMessages" class="chat-messages">
+                </div>
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" placeholder="Pergunte sobre promoções...">
+                <button onclick="sendMessage()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>🛍️ PromoShopee</h3>
-                    <p>As melhores promoções da Shopee em um só lugar.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Contato</h4>
-                    <p>Email: contato@promoshopee.com</p>
-                    <p>WhatsApp: (11) 99999-9999</p>
+                    <h3>💎 Shopee Treasures</h3>
+                    <p>Caçando as melhores promoções para você</p>
                 </div>
                 <div class="footer-section">
                     <h4>Links Rápidos</h4>
                     <a href="#inicio">Início</a>
-                    <a href="#produtos">Produtos</a>
-                    <a href="#sobre">Sobre</a>
-                    <a href="#contato">Contato</a>
+                    <a href="#produtos">Promoções</a>
+                    <a href="#sobre">Como Funciona</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 PromoShopee. Todos os direitos reservados.</p>
+                <p>&copy; 2024 Shopee Treasures. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Modal de Produto -->
     <div id="productModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
