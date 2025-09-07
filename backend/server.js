@@ -13,8 +13,8 @@ app.use(express.json());
 
 // Configurações
 const SHOPEE_API = 'https://open-api.affiliate.shopee.com.br/graphql';
-const APP_ID = '18305010276'; [cite_start]// [cite: 1]
-const SECRET = 'LRINXLVGSVNOB2FW6FOHBOR6NPRRB3NW'; [cite_start]// [cite: 1]
+const APP_ID = '18305010276';
+const SECRET = 'LRINXLVGSVNOB2FW6FOHBOR6NPRRB3NW';
 
 // Inicializa o cliente do Gemini com a chave de API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
