@@ -7,7 +7,7 @@ let searchParams = {
     category: '',
     sort: 'relevance'
 };
-let chatHistory = []; // Para guardar o histórico da conversa
+let chatHistory = [];
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadInitialProducts();
     setupEventListeners();
 
-    // Adicionar mensagem inicial do chatbot
     setTimeout(() => {
         const welcomeMessage = CHAT_CONFIG.WELCOME_MESSAGE;
         addMessage(welcomeMessage, 'bot');
@@ -25,9 +24,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Configurar event listeners
 function setupEventListeners() {
+    // Busca
     document.getElementById('searchInput').addEventListener('keypress', e => e.key === 'Enter' && searchProducts());
+    
+    // Chat
     document.getElementById('chatInput').addEventListener('keypress', e => e.key === 'Enter' && sendMessage());
-    document.getElementById('productModal').addEventListener('click', e => e.target === e.currentTarget && closeModal());
+    
+    // Modal
+    document.getElementById('productModal').addEventListener('click', e => {
+        if (e.target.classList.contains('modal') || e.target.classList.contains('close')) {
+            closeModal();
+        }
+    });
     
     const chatContainer = document.getElementById('chat-container');
     const chatToggleButton = document.getElementById('chat-toggle-button');
@@ -41,6 +49,38 @@ function setupEventListeners() {
     chatCloseButton.addEventListener('click', () => {
         chatContainer.classList.toggle('hidden');
         chatToggleButton.classList.toggle('hidden');
+    });
+
+    // --- Lógica do Menu Hambúrguer ---
+    const hamburgerButton = document.getElementById('hamburger-button');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileNavLinks = mobileNav.querySelectorAll('.nav-link');
+
+    hamburgerButton.addEventListener('click', () => {
+        hamburgerButton.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+    });
+
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            hamburgerButton.classList.remove('active');
+            mobileNav.classList.remove('active');
+        });
+    });
+
+    // --- Lógica do Botão Voltar ao Topo ---
+    const backToTopBtn = document.getElementById('backToTopBtn');
+
+    window.onscroll = () => {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    };
+
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
@@ -71,20 +111,18 @@ async function fetchShopeeProducts(params) {
         });
 
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || `Erro HTTP: ${response.status}`);
+            throw new Error(`Erro HTTP: ${response.status}`);
         }
 
         const data = await response.json();
         
-        if (data.errors || !data.success) {
-            console.error('❌ Erros da API:', data.errors || 'Requisição falhou');
+        if (!data.success || data.errors) {
+            console.error('❌ Erros da API:', data.errors);
             return FALLBACK_PRODUCTS;
         }
 
         if (!data.data?.productOfferV2?.nodes || data.data.productOfferV2.nodes.length === 0) {
-            console.log('📭 Nenhum produto encontrado na API');
-            return []; // Retorna array vazio em vez de fallback
+            return [];
         }
 
         return data.data.productOfferV2.nodes;
@@ -98,7 +136,6 @@ async function fetchShopeeProducts(params) {
 // Exibir produtos na grade
 function displayProducts(products) {
     const grid = document.getElementById('productsGrid');
-    
     if (!products || products.length === 0) {
         grid.innerHTML = '<div class="loading">Nenhum produto encontrado. Tente uma nova busca!</div>';
         return;
@@ -129,7 +166,6 @@ const formatSales = sales => (sales >= 1000) ? `${(sales / 1000).toFixed(1)}k` :
 // Ações de busca
 async function searchProducts() {
     const searchTerm = document.getElementById('searchInput').value.trim();
-    // Define os parâmetros para uma busca padrão a partir da barra de pesquisa
     searchParams.query = searchTerm || SITE_CONFIG.DEFAULT_SEARCH_TERM;
     searchParams.category = '';
     searchParams.sort = 'relevance';
@@ -138,7 +174,6 @@ async function searchProducts() {
     document.getElementById('produtos').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Função genérica para disparar a busca com os parâmetros atuais
 async function triggerSearch() {
     showLoading();
     const products = await fetchShopeeProducts(searchParams);
@@ -151,8 +186,8 @@ function openProductModal(itemId) {
     const product = currentProducts.find(p => p.itemId === itemId);
     if (!product) return;
     
-    const modalContent = document.getElementById('modalContent');
-    modalContent.innerHTML = `
+    const modalContentEl = document.getElementById('modalContent');
+    modalContentEl.innerHTML = `
         <span class="close" onclick="closeModal()">&times;</span>
         <div class="modal-product">
             <div class="modal-image-container">
@@ -273,8 +308,7 @@ function addMessage(text, type) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}`;
     if (type.includes('typing')) messageDiv.id = 'typing-indicator';
-    // Usar innerHTML diretamente para renderizar o link
-    messageDiv.innerHTML = text; 
+    messageDiv.innerHTML = text;
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }

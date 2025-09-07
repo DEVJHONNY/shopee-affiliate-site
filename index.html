@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF--8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopee Treasures - Promoções e Cupons</title>
     <link rel="stylesheet" href="styles.css">
@@ -14,12 +14,23 @@
                 <h1>💎 Shopee Treasures</h1>
                 <p>Descubra tesouros com até 80% OFF</p>
             </div>
-            <nav class="nav">
+            <nav class="nav" id="desktop-nav">
                 <a href="#inicio" class="nav-link">Início</a>
                 <a href="#cupons" class="nav-link">Cupons</a>
                 <a href="#produtos" class="nav-link">Promoções</a>
                 <a href="#sobre" class="nav-link">Como Funciona</a>
             </nav>
+            <button class="hamburger" id="hamburger-button">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="#inicio" class="nav-link">Início</a>
+            <a href="#cupons" class="nav-link">Cupons</a>
+            <a href="#produtos" class="nav-link">Promoções</a>
+            <a href="#sobre" class="nav-link">Como Funciona</a>
         </div>
     </header>
 
@@ -105,6 +116,8 @@
         </div>
     </section>
 
+    <button id="backToTopBtn" title="Voltar ao topo">↑</button>
+
     <div class="chat-widget">
         <button id="chat-toggle-button" class="chat-toggle-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
@@ -114,8 +127,7 @@
                 <h3>Assistente de Promoções</h3>
                 <button id="chat-close-button">&times;</button>
             </div>
-            <div id="chatMessages" class="chat-messages">
-                </div>
+            <div id="chatMessages" class="chat-messages"></div>
             <div class="chat-input-container">
                 <input type="text" id="chatInput" placeholder="Pergunte sobre promoções...">
                 <button onclick="sendMessage()">Enviar</button>
@@ -146,7 +158,6 @@
 
     <div id="productModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
             <div id="modalContent"></div>
         </div>
     </div>
