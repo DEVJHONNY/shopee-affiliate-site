@@ -15,7 +15,7 @@ body {
 
 /* Header */
 .header {
-    background-color: #6a1b9a; /* Deep Purple */
+    background-color: #6a1b9a;
     color: #fff;
     padding: 1rem 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -57,12 +57,70 @@ body {
 }
 
 .nav-link:hover {
-    color: #e0f2f1; /* Light Cyan */
+    color: #e0f2f1;
+}
+
+/* Menu Hambúrguer */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px;
+}
+
+.hamburger-bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active .hamburger-bar:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active .hamburger-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .hamburger-bar:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.mobile-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #6a1b9a;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 998;
+}
+
+.mobile-nav.active {
+    display: flex;
+}
+
+.mobile-nav .nav-link {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.mobile-nav .nav-link:last-child {
+    border-bottom: none;
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #8e24aa 0%, #ab47bc 100%); /* Purple Gradient */
+    background: linear-gradient(135deg, #8e24aa 0%, #ab47bc 100%);
     color: #fff;
     text-align: center;
     padding: 6rem 0;
@@ -102,7 +160,7 @@ body {
 }
 
 .search-box button {
-    background-color: #ff9800; /* Amber */
+    background-color: #ff9800;
     color: #fff;
     border: none;
     padding: 12px 25px;
@@ -113,7 +171,7 @@ body {
 }
 
 .search-box button:hover {
-    background-color: #fb8c00; /* Darker Amber */
+    background-color: #fb8c00;
     transform: translateY(-2px);
 }
 
@@ -129,7 +187,7 @@ body {
 
 .coupons-section h2 {
     font-size: 2.5rem;
-    color: #4a148c; /* Dark Purple */
+    color: #4a148c;
     margin-bottom: 3rem;
     font-weight: 700;
 }
@@ -143,7 +201,7 @@ body {
 }
 
 .coupon-card {
-    background-color: #f3e5f5; /* Light Purple */
+    background-color: #f3e5f5;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -157,20 +215,20 @@ body {
 }
 
 .coupon-card h3 {
-    color: #6a1b9a; /* Deep Purple */
+    color: #6a1b9a;
     font-size: 1.6rem;
     margin-bottom: 15px;
 }
 
 .coupon-card p {
-    color: #4a148c; /* Darker Purple */
+    color: #4a148c;
     font-size: 1rem;
     margin-bottom: 25px;
 }
 
 .coupon-button {
     display: inline-block;
-    background-color: #ff9800; /* Amber */
+    background-color: #ff9800;
     color: #fff;
     padding: 12px 25px;
     border-radius: 8px;
@@ -180,13 +238,13 @@ body {
 }
 
 .coupon-button:hover {
-    background-color: #fb8c00; /* Darker Amber */
+    background-color: #fb8c00;
 }
 
 /* Products Section */
 .products {
     padding: 40px 0;
-    background-color: #ede7f6; /* Lighter Purple */
+    background-color: #ede7f6;
     margin-bottom: 40px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -195,7 +253,7 @@ body {
 
 .products h2 {
     font-size: 2.5rem;
-    color: #4a148c; /* Dark Purple */
+    color: #4a148c;
     margin-bottom: 3rem;
     font-weight: 700;
 }
@@ -243,7 +301,7 @@ body {
     margin-top: 0;
     margin-bottom: 10px;
     color: #333;
-    min-height: 48px; /* For consistent card height */
+    min-height: 48px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -261,7 +319,7 @@ body {
 .current-price {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #6a1b9a; /* Deep Purple */
+    color: #6a1b9a;
 }
 
 .original-price {
@@ -271,7 +329,7 @@ body {
 }
 
 .discount {
-    background-color: #ef5350; /* Red */
+    background-color: #ef5350;
     color: #fff;
     padding: 3px 8px;
     border-radius: 4px;
@@ -291,7 +349,7 @@ body {
 
 /* Loading State */
 .loading {
-    grid-column: 1 / -1; /* Spans across all columns */
+    grid-column: 1 / -1;
     text-align: center;
     padding: 50px;
     font-size: 1.2rem;
@@ -380,6 +438,34 @@ body {
     font-size: 1rem;
     color: #4a148c;
     margin: 5px 0 0;
+}
+
+/* Botão Voltar ao Topo */
+#backToTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 99;
+    background-color: #6a1b9a;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#backToTopBtn:hover {
+    background-color: #7b1fa2;
+    transform: translateY(-2px);
+}
+
+#backToTopBtn.show {
+    display: block;
 }
 
 /* Footer */
@@ -579,7 +665,7 @@ body {
 }
 
 .chat-toggle-button {
-    background-color: #6a1b9a; /* Deep Purple */
+    background-color: #6a1b9a;
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -596,7 +682,7 @@ body {
 
 .chat-toggle-button:hover {
     transform: scale(1.05);
-    background-color: #7b1fa2; /* Slightly lighter purple */
+    background-color: #7b1fa2;
 }
 
 .chat-toggle-button.hidden {
@@ -619,12 +705,12 @@ body {
 .chat-container.hidden {
     transform: translateY(20px);
     opacity: 0;
-    pointer-events: none; /* Impede interação quando escondido */
-    position: absolute; /* Para não ocupar espaço quando hidden */
+    pointer-events: none;
+    position: absolute;
 }
 
 .chat-header {
-    background-color: #4a148c; /* Dark Purple */
+    background-color: #4a148c;
     color: #fff;
     padding: 15px;
     border-top-left-radius: 15px;
@@ -670,14 +756,14 @@ body {
     border-radius: 18px;
     line-height: 1.4;
     font-size: 0.95rem;
-    word-wrap: break-word; /* Para quebrar palavras longas */
+    word-wrap: break-word;
 }
 
 .message.user {
     align-self: flex-end;
-    background-color: #6a1b9a; /* Deep Purple */
+    background-color: #6a1b9a;
     color: #fff;
-    border-bottom-right-radius: 4px; /* Pequeno ajuste para parecer mais natural */
+    border-bottom-right-radius: 4px;
 }
 
 .message.bot {
@@ -701,8 +787,8 @@ body {
 }
 
 .message.bot.error {
-    background-color: #ffe0b2; /* Light orange for error */
-    color: #d32f2f; /* Dark red text */
+    background-color: #ffe0b2;
+    color: #d32f2f;
     border: 1px solid #ef9a9a;
 }
 
@@ -729,7 +815,7 @@ body {
 }
 
 .chat-input-container button {
-    background-color: #ff9800; /* Amber */
+    background-color: #ff9800;
     color: #fff;
     border: none;
     border-radius: 20px;
@@ -740,19 +826,21 @@ body {
 }
 
 .chat-input-container button:hover {
-    background-color: #fb8c00; /* Darker Amber */
+    background-color: #fb8c00;
 }
 
-
-/* Responsiveness */
+/* Responsividade Mobile */
 @media (max-width: 768px) {
     .header .container {
-        flex-direction: column;
+        position: relative;
     }
-
+    
     .nav {
-        margin-top: 15px;
-        justify-content: center;
+        display: none;
+    }
+    
+    .hamburger {
+        display: flex;
     }
 
     .hero-content h2 {
