@@ -2,7 +2,7 @@
 const SECURITY_CONFIG = {
     MAX_REQUESTS_PER_MINUTE: 60,
     SESSION_TIMEOUT: 30 * 60 * 1000, // 30 minutos
-    CORS_ORIGINS: ['https://shopee.com.br', 'https://shopee-backend.onrender.com'],
+    CORS_ORIGINS: ['https://shopee.com.br', 'https://shopee-backend-jrbl.onrender.com'],
     CSP_DIRECTIVES: "default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' https://*.shopee.com.br https://via.placeholder.com data:; connect-src 'self' https://*.shopee.com.br; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;",
     SECURITY_HEADERS: {
         'X-XSS-Protection': '1; mode=block',
@@ -35,7 +35,7 @@ const SHOPEE_CONFIG = {
         enabled: true,
         algorithm: 'aes-256-gcm'
     },
-    BACKEND_URL: 'https://shopee-backend.onrender.com',
+    BACKEND_URL: 'https://shopee-backend-jrbl.onrender.com',
     USE_REAL_API: true,
     DEBUG_MODE: false
 };
