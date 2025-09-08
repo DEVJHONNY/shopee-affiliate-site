@@ -9,6 +9,22 @@ services:
         value: production
       - key: PORT
         value: 10000
+      - key: SHOPEE_APP_ID
+        value: 18305010276
+      - key: SHOPEE_SECRET
+        sync: false # Será configurado via dashboard
+      - key: GEMINI_API_KEY
+        sync: false # Será configurado via dashboard
     plan: free
     healthCheckPath: /health
     autoDeploy: true
+    regions:
+      - sao
+    headers:
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: https://shopee-treasures.netlify.app
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /

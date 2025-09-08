@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Sitemap: https://shopee-treasures.netlify.app/sitemap.xml
+Disallow: /api/
+Disallow: /backend/
+Disallow: /.env

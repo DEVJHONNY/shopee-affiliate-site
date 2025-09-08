@@ -1,11 +1,19 @@
 [build]
   publish = "."
   command = ""
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF . ../backend/"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://shopee-backend-jrbl.onrender.com/api/:splat"
+  status = 200
+  force = true
 
 [[headers]]
   for = "/*"
