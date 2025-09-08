@@ -3,6 +3,21 @@
   command = ""
   ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF . ../backend/"
 
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Content-Type = "text/css"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Content-Type = "text/html; charset=utf-8"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
