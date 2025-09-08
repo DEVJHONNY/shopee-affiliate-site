@@ -1,25 +1,29 @@
 [build]
-  publish = "."
-  command = ""
+publish = "."
+command = ""
 
-[dev]
-  framework = "#static"
-  targetPort = 8080
-
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Content-Type = "text/css"
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
 
 [[headers]]
-  for = "/*.js"
-  [headers.values]
-    Content-Type = "application/javascript"
+for = "/*.css"
+[headers.values]
+Content-Type = "text/css"
 
 [[headers]]
-  for = "/*.html"
-  [headers.values]
-    Content-Type = "text/html; charset=utf-8"
+for = "/*.js"
+[headers.values]
+Content-Type = "application/javascript"
+
+[[headers]]
+for = "/*.html"
+[headers.values]
+Content-Type = "text/html; charset=utf-8"
+
+[build.processing]
+skip_processing = false
 
 [[headers]]
   for = "*.js"
