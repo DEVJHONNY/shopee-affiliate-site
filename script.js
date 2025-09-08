@@ -2,6 +2,23 @@
 let currentProducts = [];
 let currentPage = 1;
 let isLoading = false;
+let requestCount = 0;
+let lastRequestTime = Date.now();
+
+// Funções de Segurança
+const sanitizeInput = (str) => {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+};
+
+const validateProduct = (product) => {
+    const requiredFields = ['itemId', 'productName', 'imageUrl', 'priceMin', 'priceMax'];
+    return requiredFields.every(field => product.hasOwnProperty(field)) &&
+        typeof product.itemId === 'number' &&
+        product.priceMin > 0;
+};
+
 let searchParams = {
     query: '',
     category: '',
@@ -10,12 +27,10 @@ let searchParams = {
 let chatHistory = [];
 
 // Inicialização
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🛍️ PromoShopee inicializado!');
+document.addEventListener('DOMContentLoaded', () => {
+    SHOPEE_CONFIG.DEBUG_MODE && console.log('🛍️ Shopee Treasures - Iniciando...');
     loadInitialProducts();
-    setupEventListeners();
-
-    setTimeout(() => {
+    setupEventListeners(); setTimeout(() => {
         const welcomeMessage = CHAT_CONFIG.WELCOME_MESSAGE;
         addMessage(welcomeMessage, 'bot');
         chatHistory.push({ role: "model", parts: [{ text: welcomeMessage }] });
@@ -26,17 +41,17 @@ document.addEventListener('DOMContentLoaded', function() {
 function setupEventListeners() {
     // Busca
     document.getElementById('searchInput').addEventListener('keypress', e => e.key === 'Enter' && searchProducts());
-    
+
     // Chat
     document.getElementById('chatInput').addEventListener('keypress', e => e.key === 'Enter' && sendMessage());
-    
+
     // Modal
     document.getElementById('productModal').addEventListener('click', e => {
         if (e.target.classList.contains('modal') || e.target.classList.contains('close')) {
             closeModal();
         }
     });
-    
+
     const chatContainer = document.getElementById('chat-container');
     const chatToggleButton = document.getElementById('chat-toggle-button');
     const chatCloseButton = document.getElementById('chat-close-button');
@@ -101,10 +116,20 @@ async function loadInitialProducts() {
 // Buscar produtos da API
 async function fetchShopeeProducts(params) {
     try {
-        console.log('🔍 Buscando produtos:', params);
-        showLoading();
-        
-        const response = await fetch(`${SHOPEE_CONFIG.BACKEND_URL}/api/products`, {
+        // Rate limiting
+        const now = Date.now();
+        if (now - lastRequestTime < 1000) {
+            const waitTime = 1000 - (now - lastRequestTime);
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+        }
+        lastRequestTime = Date.now();
+
+        // Validação de parâmetros
+        params.query = sanitizeInput(params.query);
+        if (params.query.length > 100) throw new Error('Busca muito longa');
+
+        SHOPEE_CONFIG.DEBUG_MODE && console.log('🔍 Buscando:', params.query);
+        showLoading(); const response = await fetch(`${SHOPEE_CONFIG.BACKEND_URL}/api/products`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(params)
@@ -115,7 +140,7 @@ async function fetchShopeeProducts(params) {
         }
 
         const data = await response.json();
-        
+
         if (!data.success || data.errors) {
             console.error('❌ Erros da API:', data.errors);
             return FALLBACK_PRODUCTS;
@@ -129,6 +154,13 @@ async function fetchShopeeProducts(params) {
 
     } catch (error) {
         console.error('❌ Erro ao buscar produtos:', error);
+        const errorMessage = document.getElementById('productsGrid');
+        errorMessage.innerHTML = `
+            <div class="loading error">
+                <p>😕 Ops! Tivemos um problema ao buscar os produtos.</p>
+                <button onclick="location.reload()" class="retry-button">Tentar Novamente</button>
+            </div>
+        `;
         return FALLBACK_PRODUCTS;
     }
 }
@@ -143,7 +175,11 @@ function displayProducts(products) {
 
     grid.innerHTML = products.map(product => `
         <div class="product-card" onclick="openProductModal(${product.itemId})">
-            <img src="${product.imageUrl || 'placeholder.jpg'}" alt="${product.productName}" class="product-image" onerror="this.src='https://via.placeholder.com/300'">
+            <img src="${product.imageUrl || 'assets/images/placeholder.jpg'}" 
+                alt="${product.productName}" 
+                class="product-image" 
+                onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300?text=Imagem+Indisponível'"
+                loading="lazy">
             <div class="product-info">
                 <h3>${product.productName}</h3>
                 <div class="product-price">
@@ -169,7 +205,7 @@ async function searchProducts() {
     searchParams.query = searchTerm || SITE_CONFIG.DEFAULT_SEARCH_TERM;
     searchParams.category = '';
     searchParams.sort = 'relevance';
-    
+
     await triggerSearch();
     document.getElementById('produtos').scrollIntoView({ behavior: 'smooth' });
 }
@@ -184,8 +220,12 @@ async function triggerSearch() {
 // Modal
 function openProductModal(itemId) {
     const product = currentProducts.find(p => p.itemId === itemId);
-    if (!product) return;
-    
+    if (!product) {
+        console.error('Produto não encontrado:', itemId);
+        alert('Desculpe, não foi possível abrir os detalhes deste produto.');
+        return;
+    }
+
     const modalContentEl = document.getElementById('modalContent');
     modalContentEl.innerHTML = `
         <span class="close" onclick="closeModal()">&times;</span>
@@ -241,7 +281,7 @@ async function sendMessage() {
 
 function handleLocalCommand(message) {
     const lowerMessage = message.toLowerCase();
-    
+
     if (lowerMessage.includes('menor preço')) {
         searchParams.sort = 'price_asc';
         triggerSearch();

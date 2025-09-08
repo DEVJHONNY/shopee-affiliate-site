@@ -1,22 +1,77 @@
 // Configurações da API Shopee - PRODUÇÃO
+const SECURITY_CONFIG = {
+    MAX_REQUESTS_PER_MINUTE: 60,
+    SESSION_TIMEOUT: 30 * 60 * 1000, // 30 minutos
+    CORS_ORIGINS: ['https://shopee.com.br', 'https://shopee-backend-jrbl.onrender.com'],
+    CSP_DIRECTIVES: "default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' https://*.shopee.com.br https://via.placeholder.com data:; connect-src 'self' https://*.shopee.com.br; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;",
+    SECURITY_HEADERS: {
+        'X-XSS-Protection': '1; mode=block',
+        'X-Frame-Options': 'DENY',
+        'X-Content-Type-Options': 'nosniff',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+        'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
+    },
+    RATE_LIMIT: {
+        WINDOW_MS: 15 * 60 * 1000, // 15 minutos
+        MAX_REQUESTS: 100,
+        MESSAGE: 'Muitas requisições, tente novamente em alguns minutos'
+    },
+    INPUT_VALIDATION: {
+        MAX_QUERY_LENGTH: 100,
+        ALLOWED_SORTS: ['relevance', 'price_asc', 'price_desc', 'sales'],
+        ALLOWED_CATEGORIES: ['eletronicos', 'moda', 'casa', 'beleza']
+    }
+};
+
 const SHOPEE_CONFIG = {
-    APP_ID: '18305010276',
-    SECRET: 'LRINXLVGSVNOB2FW6FOHBOR6NPRRB3NW',
+    APP_ID: '18305010276', // Valor público de produção
+    SECRET: '************', // Valor protegido - Nunca expor
     API_URL: 'https://open-api.affiliate.shopee.com.br/graphql',
+    API_VERSION: 'v2',
+    TIMEOUT: 10000, // 10 segundos
+    RETRY_ATTEMPTS: 3,
+    ENCRYPTION: {
+        enabled: true,
+        algorithm: 'aes-256-gcm'
+    },
     BACKEND_URL: 'https://shopee-backend-jrbl.onrender.com',
     USE_REAL_API: true,
     DEBUG_MODE: false
 };
 
 const SITE_CONFIG = {
-    SITE_NAME: 'PromoShopee',
-    SITE_DESCRIPTION: 'As melhores promoções da Shopee',
+    SITE_NAME: 'Shopee Treasures',
+    SITE_DESCRIPTION: 'Descubra tesouros com até 80% OFF na Shopee',
     DEFAULT_SEARCH_TERM: 'promoção',
     ITEMS_PER_PAGE: 20,
     AFFILIATE_TAG: '?affiliate_id=18305010276'
 };
 
-const FALLBACK_PRODUCTS = []; // Deixado em branco para simplicidade, adicione produtos se necessário.
+const FALLBACK_PRODUCTS = [
+    {
+        itemId: 1,
+        productName: "Smartphone Exemplo",
+        imageUrl: "https://via.placeholder.com/300x300?text=Smartphone",
+        priceMin: 599.99,
+        priceMax: 999.99,
+        ratingStar: 4.5,
+        sales: 1500,
+        shopName: "Loja Exemplo",
+        offerLink: "https://shopee.com.br"
+    },
+    {
+        itemId: 2,
+        productName: "Fone de Ouvido Bluetooth",
+        imageUrl: "https://via.placeholder.com/300x300?text=Fone+Bluetooth",
+        priceMin: 89.99,
+        priceMax: 149.99,
+        ratingStar: 4.8,
+        sales: 2300,
+        shopName: "Loja Exemplo",
+        offerLink: "https://shopee.com.br"
+    }
+];
 
 const CHAT_CONFIG = {
     BOT_NAME: 'Assistente Shopee',
@@ -33,4 +88,4 @@ const CHAT_CONFIG = {
     }
 };
 
-console.log('🛍️ PromoShopee Configurado!');
+// Configuração concluída
